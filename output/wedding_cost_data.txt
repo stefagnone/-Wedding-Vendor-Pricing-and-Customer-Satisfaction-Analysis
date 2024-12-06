@@ -1,0 +1,142 @@
+/*For wedding size of 135*/
+USE weddings;
+
+DROP TEMPORARY TABLE IF EXISTS wedding_cost_data;
+-- 1st creating table wedding_cost_data
+CREATE TEMPORARY TABLE wedding_cost_data(
+    department VARCHAR(255),
+    vendor_name VARCHAR(255),
+    vendor_budget_level VARCHAR(255),
+    item_name VARCHAR(255),
+    price_per_item DECIMAL(10, 2),
+    quantity_required INT,
+    subtotal DECIMAL(10, 2)
+);
+
+-- Fill in the table with data from relevant_vendors (changed from temporary table to full table in weddings database)
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level)
+	SELECT department, vendor, budget_level
+	FROM relevant_vendors
+	WHERE vendor_id IN ('cak18', 'cat22', 'dre35', 'flo21', 'hai08', 'inv18', 'jwl20', 'mus02', 'pho07', 'ren29', 'ven23', 'wed06');
+
+
+-- add information gathered to table for departments with ONLY 1 item
+-- code taken from https://www.w3schools.com/sql/sql_update.asp
+SET SQL_SAFE_UPDATES = 0; -- bypasses sql saftey- used to prevent items to be updated 
+
+-- cake
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'wedding cakes with buttercream frosting:$6 per piece', 
+    price_per_item = 6, 
+    quantity_required = 135
+WHERE department = 'cake';
+
+-- catering
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'catering price per person for stations', 
+    price_per_item = 85, 
+    quantity_required = 135
+WHERE department = 'catering';
+
+-- dress atire
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'The Other White Dress by Morilee- Style 12621 - Nadira Wedding Dress', 
+    price_per_item = 1200, 
+    quantity_required = 1
+WHERE department = 'dress atire';
+
+-- hair and makeup
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'makeup x michelle - Natural makeup and hairstyle for the bride: $120 - $150', 
+    price_per_item = 135, 
+    quantity_required = 1
+WHERE department = 'hair and makeup';
+
+-- jewelry
+UPDATE wedding_cost_data 
+SET 
+    item_name = "Bride's wedding band", 
+    price_per_item = 1550, 
+    quantity_required = 2
+WHERE department = 'jewelry';
+
+--  music
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'DJ service', 
+    price_per_item = 1495, 
+    quantity_required = 1
+WHERE department = 'music';
+
+-- photo and video
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'Photography package (lowest) - High-Res Images, Photo Albums, Video', 
+    price_per_item = 5000, 
+    quantity_required = 1
+WHERE department = 'photo and video';
+
+-- venue
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'Outdoor garden venue rental: $16,000', 
+    price_per_item = 118, 
+    quantity_required = 135
+WHERE department = 'venues';
+
+-- wedding planners
+UPDATE wedding_cost_data 
+SET 
+    item_name = 'Day-of coordination', 
+    price_per_item = 3800, 
+    quantity_required = 1
+WHERE department = 'wedding planners';
+
+-- adding itmes that have multiple items into table manually (long code)
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Bridal bouquet', 250, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Boutonniere', 20, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Reception centerpieces', 120, 5);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Flower girl petals', 25, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Ceremony structures', 1500, 2);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Head table florals', 1500, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Table décor', 35, 16);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('flowers', 'petals and decor', 'moderate', 'Cake flowers', 150, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('invitations', 'raoul martinez calligraphy', 'moderate', 'Invitations (per set): $3 - $10', 5.5, 135);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('invitations', 'raoul martinez calligraphy', 'moderate', 'Calligraphy on Envelopes', 1.4, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('invitations', 'raoul martinez calligraphy', 'moderate', 'Calligraphy on Placecards', 1.4, 10);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('rentals', 'chic event rentals', 'moderate', 'Wooden or bamboo chair rental', 11, 135);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('rentals', 'chic event rentals', 'moderate', 'Linen and decor for tables', 15, 17);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('rentals', 'chic event rentals', 'moderate', 'Tent rental', 1200, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('rentals', 'chic event rentals', 'moderate', 'Tables', 14, 17);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('rentals', 'chic event rentals', 'moderate', 'Plates, glasses and flatware', 15, 135);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('rentals', 'chic event rentals', 'moderate', 'Lighting', 700, 1);
+INSERT INTO wedding_cost_data (department, vendor_name, vendor_budget_level, item_name, price_per_item, quantity_required)
+VALUES ('rentals', 'chic event rentals', 'moderate', 'Dancefloor', 585, 1);
+
+-- updating subtotal
+UPDATE wedding_cost_data
+SET subtotal = price_per_item * quantity_required;
+
+select * from wedding_cost_data
+where item_name IS NOT NULL;
