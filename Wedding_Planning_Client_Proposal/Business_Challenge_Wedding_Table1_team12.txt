@@ -1,0 +1,271 @@
+-- A2: Preparing Client Proposals (Team)
+
+-- Connecting to the cohort's database (weddings)
+USE weddings;
+
+-- Get to know the tables
+DESC vendors;
+DESC departments;
+DESC music_match;
+
+-- Inspecting most important table
+SELECT COUNT(*)
+FROM vendors;
+
+-- Checking tables
+SELECT *
+FROM photo_prices;
+
+-- Create a view to work with the data in a single table
+CREATE VIEW complete_database AS
+SELECT departments.functions,
+	   -- vendors.vendor_id,
+	   vendors.vendor,
+       cities.city,
+       prices.affordability,
+       vendors.reviews, 
+       vendors.avg_stars,
+       addresses.address,
+       url.url,
+       hair_makeup.hair,
+       hair_makeup.makeup,
+	   hair_makeup.pre_wedding,
+       hair_experience.years,
+       tasting.city_id,
+       companies.company,
+       photo.is_photographer,
+       photo.package_price,
+       wp.hourly,
+       wp.daily,
+       wp.partial,
+       wp.full,
+       capacity.capacity,
+       location.indoor,
+       location.outdoor,
+       venues.*,
+       invitations.min_quantity,
+       catering.buffet,
+       catering.plate,
+       rental.*,
+       diets.*,
+       cakes.*,
+       cake_services.buffet_style,
+       cake_services.cake_accessories,
+       cake_services.cake_cutting_and_serving,
+       cake_services.cake_delivery_and_setup,	
+       cake_services.cake_serving_sets,
+       cake_services.cake_stands,
+       cake_services.cake_table_decorations,
+       cake_services.cake_tastings,
+       cake_services.cake_toppers,
+       cake_services.consultations,
+       cake_services.cupcakes,
+       cake_services.custom_orders,
+       cake_services.groom_cakes,	
+       cake_services.other_desserts
+FROM vendors
+LEFT JOIN sources AS url
+	ON vendors.vendor_id = url.url_id
+LEFT JOIN planner_prices AS wp
+	ON vendors.vendor_id = wp.wed_id
+LEFT JOIN photo_prices AS photo
+	ON vendors.vendor_id = photo.pho_id
+LEFT JOIN music_match 
+	ON vendors.vendor_id = music_match.mus_id
+LEFT JOIN music_type AS music
+	ON music_match.type_id = music.type_id
+LEFT JOIN addresses
+	ON vendors.vendor_id = addresses.address_id
+LEFT JOIN tasting_cities as tasting
+	ON vendors.vendor_id = tasting.cat_id
+LEFT JOIN hair_experience
+	ON vendors.vendor_id = hair_experience.hai_id
+LEFT JOIN hair_services AS hair_makeup
+	ON vendors.vendor_id = hair_makeup.hai_id
+LEFT JOIN catering_services AS catering
+	ON vendors.vendor_id = catering.cat_id
+LEFT JOIN rental_services AS rental
+	ON vendors.vendor_id = rental.ren_id
+LEFT JOIN cake_services
+	ON vendors.vendor_id = cake_services.cak_id
+LEFT JOIN cakes 
+	ON vendors.vendor_id = cakes.cak_id
+LEFT JOIN diets 
+	ON vendors.vendor_id = diets.diet_id
+LEFT JOIN invitations 
+	ON vendors.vendor_id = invitations.inv_id
+LEFT JOIN venues 
+	ON vendors.vendor_id = venues.ven_id
+LEFT JOIN venue_capacities AS capacity
+	ON vendors.vendor_id = capacity.ven_id
+LEFT JOIN venue_locations AS location
+	ON vendors.vendor_id = location.ven_id
+LEFT JOIN departments 
+	ON vendors.function_id = departments.function_id
+LEFT JOIN prices 
+	ON vendors.price_id = prices.price_id
+LEFT JOIN cities 
+	ON vendors.city_id = cities.city_id
+LEFT JOIN store_cmp AS store
+	ON vendors.vendor_id = store.store_id
+LEFT JOIN companies
+	ON store.cmp_id = companies.cmp_id;
+
+SELECT *
+FROM complete_database;
+
+/* Moderate and Inexpensive
+*/
+
+SELECT 	
+		functions,
+		vendor,
+        affordability AS budget_level,
+        reviews,
+        avg_stars,
+        city,
+        CASE
+        WHEN capacity <= 50 THEN 'Small'
+        WHEN capacity > 51 and capacity <= 150 THEN 'Medium'
+        WHEN capacity > 150 THEN 'Large'
+        ELSE 'S, M, L'
+        END AS 'wedding_size'
+FROM complete_database
+-- Inexpensive budget
+WHERE (affordability LIKE 'inexpensive'
+		AND functions = 'venues'
+		AND outdoor = 1)
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'flowers'
+		AND reviews > 100)
+    OR (affordability LIKE 'inexpensive'
+		AND functions = 'invitations'
+		AND reviews > 100)
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'cake'
+		AND vegan = 1)
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'catering')
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'dress atire'
+		AND reviews > 100)
+	OR (affordability LIKE 'inexpensive'
+		AND functions   = 'rentals'
+		AND table_chair = 1
+		AND tableware   = 1)
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'hair and makeup')
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'photo and video'
+		AND reviews > 100)
+    OR (affordability LIKE 'inexpensive'
+		AND functions = 'music')
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'jewelry')
+	OR (affordability LIKE 'inexpensive'
+		AND functions = 'wedding planners'
+		AND daily <= 1000)
+-- Affordable budget
+	OR (affordability LIKE 'affordable'
+		AND functions = 'venues'
+		AND outdoor = 1
+		AND reviews > 15)
+	OR  (affordability LIKE 'affordable'
+		AND functions = 'flowers'
+		AND reviews > 150)
+	OR (affordability LIKE 'affordable'
+		AND functions = 'invitations'
+		AND reviews > 200)
+	OR (affordability LIKE 'affordable'
+		AND functions = 'cake'
+		AND vegan = 1)
+	OR (affordability LIKE 'affordable'
+		AND functions = 'catering')
+	OR (affordability LIKE 'affordable'
+		AND functions = 'dress atire')
+	OR (affordability LIKE 'affordable'
+		AND functions   = 'rentals'
+		AND table_chair = 1
+		AND tableware   = 1)
+	OR (affordability LIKE 'affordable'
+		AND functions = 'hair and makeup'
+		AND years >= 11)
+	OR (affordability LIKE 'affordable'
+		AND functions = 'photo and video'
+		AND is_photographer = 1)
+	OR (affordability LIKE 'affordable'
+		AND functions = 'music')
+	OR (functions = 'jewelry'
+		AND avg_stars = 5)
+	OR (affordability LIKE 'affordable'
+		AND functions = 'wedding planners'
+		AND hourly = 0)
+
+-- Moderate 
+	OR (affordability LIKE 'moderate'
+		AND outdoor = 1)
+	OR (affordability LIKE 'moderate'
+		AND functions = 'flowers')
+	OR (affordability LIKE 'moderate'
+		AND functions = 'invitations'
+		AND reviews > 100)
+	OR (affordability LIKE 'moderate'
+		AND vegan = 1)
+	OR (affordability LIKE 'moderate'
+		AND functions = 'catering'
+		AND buffet = 1
+		AND reviews >100)   
+	OR (affordability LIKE 'moderate'
+		AND functions = 'dress atire'
+		AND reviews > 100
+		AND avg_stars > 4.5)
+	OR (affordability LIKE 'moderate'
+		AND functions   = 'rentals'
+		AND table_chair = 1
+		AND tableware   = 1)
+	OR (affordability LIKE 'moderate'
+		AND functions = 'hair and makeup'
+		AND avg_stars > 4)
+	OR (affordability LIKE 'moderate'
+		AND functions = 'photo and video'
+		AND avg_stars > 4
+		AND reviews > 20)
+	OR (affordability LIKE 'moderate'
+		AND functions = 'music')
+	OR (affordability LIKE 'moderate'
+		AND functions = 'jewelry'
+		AND avg_stars > 4.5)
+	OR (affordability LIKE 'moderate'
+		AND functions = 'wedding planners'
+		AND hourly = 0)
+
+-- Moderate and luxury
+	OR (affordability LIKE 'luxury'
+		AND functions = 'venues'
+		AND outdoor = 1)
+	OR (affordability LIKE 'luxury'
+		AND functions = 'flowers')
+	OR (affordability LIKE 'luxury'
+		AND functions = 'invitations'
+		AND reviews > 100)
+	OR (affordability LIKE 'luxury'
+		AND functions = 'cake'
+		AND vegan = 1)
+	OR (affordability LIKE 'luxury'
+		AND functions = 'catering')
+	OR (affordability LIKE 'luxury'
+		AND functions = 'dress atire')
+	OR (affordability LIKE 'luxury'
+		AND functions   = 'rentals')
+	OR (affordability LIKE 'luxury'
+		AND functions = 'hair and makeup')
+	OR (affordability LIKE 'luxury'
+		AND functions = 'photo and video')
+	OR (affordability LIKE 'luxury'
+		AND functions = 'music')
+	OR (functions = 'jewelry'
+		AND avg_stars = 5)
+	OR (affordability LIKE 'luxury'
+		AND functions = 'wedding planners'
+		AND hourly = 0);
+
