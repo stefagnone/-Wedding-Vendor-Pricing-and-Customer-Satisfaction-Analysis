@@ -1,31 +1,43 @@
 ## Project Overview
-This project investigates the relationship between wedding vendor pricing and customer satisfaction. Using data-driven insights and advanced analytics, I explored whether investing in higher-priced wedding services guarantees higher customer satisfaction. The analysis challenges traditional assumptions and provides actionable recommendations for wedding consultants.
+This project involves analyzing wedding vendor pricing data to assess its correlation with customer satisfaction and preparing cost-effective wedding proposals. It includes tasks like data collection, database design, SQL-based analysis, and crafting an itemized cost breakdown for a client-selected wedding theme.
 
-The analysis focused on:
-- Evaluating vendor pricing categories (inexpensive, affordable, moderate, and luxury) against customer satisfaction ratings.
-- Leveraging SQL for data preparation and Python for statistical modeling and visualization.
-- Generating actionable insights for client proposals and service optimizations.
+Key highlights:
+- Explored the relationship between wedding vendor pricing and customer satisfaction using data-driven insights.
+- Designed and normalized a database in 3NF, representing wedding vendor details and cost data.
+- Developed dynamic SQL queries and Python scripts to generate detailed cost breakdowns for clients.
+- Provided actionable insights for cost-effective wedding planning.
 
-This project demonstrates expertise in SQL, Python, and business consulting in the wedding industry.
+The project demonstrates advanced skills in database design, SQL, and Python for business analysis and client engagement.
 
 ## Technologies Used
-- **SQL**: Data preparation, temporary table creation, and category segmentation.
-- **Python**: Data analysis, visualization, and dynamic wedding cost breakdown generation.
-- **Pandas, NumPy**: Data manipulation and processing.
-- **Matplotlib, Seaborn**: Advanced visualizations.
-- **Microsoft PowerPoint**: Final client proposal and presentation.
+- **SQL**: Data modeling, normalization, and query generation
+- **Python**: Dynamic cost breakdown generation and data processing
+- **Excel**: Data collection and reporting
+- **PowerPoint**: Client-ready presentations
+- **Database Design**: ER diagram creation and data structuring
 
 ## Repository Structure
-- `Data/`: Contains the SQL queries and temporary tables used in data preparation.
-- `Code/`: Includes the Jupyter Notebook for Python-based analysis and cost breakdown (`wedding_cost_analysis.ipynb`).
-- `Presentation/`: Final presentation slides (`Wedding Vendor Analysis - Final Presentation.pdf`) and unlisted YouTube link.
-- `Results/`: Contains final analysis results and insights.
+- `Data/`: Contains collected data, analysis inputs, and outputs
+  - `Vision Board Analysis- Team 12.xlsx`
+  - `wedding_cost_data.txt`
+  - `DD_Wedding_DB_Code.sql`
+  - `Business_Challenge_Wedding_Table1_team12.txt`
+  - `Business_Challenge_Wedding_table2_team12.txt`
+- `Code/`: Python and SQL scripts used for data analysis
+  - `wedding cost.ipynb`
+  - `Final_Analysis_Report.py`
+- `Documents/`: Reports and presentations
+  - `Weddings ERD DD-MBAN 2023.pdf`
+  - `Business Challenge 1_Team12.pdf`
+  - `Vision Board Analysis_Team12_FMBANDD1.pdf`
+- `Output/`: Final analysis results and deliverables
+  - `wedding_cost_data_results.xlsx`
 
-## Instructions
-1. Clone this repository.
-2. Access the `Data/` folder to review the SQL queries and temporary tables.
-3. Open the Jupyter Notebook (`wedding_cost_analysis.ipynb`) in the `Code/` folder to explore the analysis and dynamic cost breakdowns.
-4. Review the final presentation in the `Presentation/` folder for a comprehensive overview of findings.
+## Key Insights
+- Vendor pricing does not exhibit a strong correlation with customer satisfaction, challenging conventional wisdom.
+- Designed a database in 3NF to streamline vendor data management for future scalability.
+- Dynamic cost breakdowns provided clear visibility into budget allocation for each wedding department.
+- Recommendations for future vendor selections include focusing on affordable options that maintain high satisfaction levels.
 
 ## Contact
 Connect with me on [LinkedIn](https://www.linkedin.com/in/stefano-compagnone98/) for more information or explore my other projects on GitHub.
